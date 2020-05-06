@@ -2,6 +2,14 @@
 
 A Particle project named gate-controller
 
+Based on NCD2Relay. Works on a 1 relay board, but steals GP1 for the second relay that doesn’t exist if you do that. You’d have to go back and hack these changes to NCD1Relay if you need all 7 GPIOs and not just 6 from the IO expander.
+
+Publishes {controller name}_1 on/off when the relay state is changed.
+
+Relay state can be changed by the cloud by any device publishing {controller name}_relay_1 with “on” or “off”.
+
+Relay state can also be changed by the Particle app under Functions.
+
 ## Welcome to your project!
 
 Every new Particle project is composed of 3 important elements that you'll see have been created in your project directory for gate-controller.
