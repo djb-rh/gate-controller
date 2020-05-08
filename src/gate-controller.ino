@@ -58,6 +58,8 @@ void setup()
 	// listen for monitors to ask for state and if they do, report it (this report is the same
 	// as what gets reported when the gate state is changed)
 	Particle.subscribe("getstate", pubState, MY_DEVICES);
+	// publish state on boot up, too
+	pubState(NULL, NULL);
 
 }
 
