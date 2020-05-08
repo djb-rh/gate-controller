@@ -32,7 +32,13 @@ void handler(const char *topic, const char *data){
     publishName = true;
 }
 
-
+void pubState(const char *topic, const char *data){
+	char pub[40] = "";
+	strcat(pub, pubString);
+	strcat(pub, "_1");
+	if (relayController.readRelayStatus(1)) Particle.publish(pub, "ON", PRIVATE);
+	else Particle.publish(pub, "OFF", PRIVATE);
+}
 
 /* This function is called once at start up ----------------------------------*/
 void setup()
@@ -48,6 +54,10 @@ void setup()
 	strcat(pubString, dev_name);
 	strcat(dev_name, "_relay_1");
 	Particle.subscribe(dev_name, triggerRelayDos, MY_DEVICES);
+
+	// listen for monitors to ask for state and if they do, report it (this report is the same
+	// as what gets reported when the gate state is changed)
+	Particle.subscribe("getstate", pubState, MY_DEVICES);
 
 }
 
