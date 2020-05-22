@@ -103,10 +103,8 @@ void loop()
 }
 
 int triggerRelayDos(const char *event, const char *data){
-    char pub[40] = "1";
-    strcat(pub, data);
-    Serial.println(pub);
-    triggerRelay(pub);
+    Serial.println(data);
+    triggerRelay(data);
 }
 
 int triggerRelay(String command){
