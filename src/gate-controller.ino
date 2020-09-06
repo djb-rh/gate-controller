@@ -60,7 +60,12 @@ void setup()
 	Particle.subscribe("getstate", pubState, MY_DEVICES);
 	// publish state on boot up, too
 	pubState(NULL, NULL);
-
+	
+	// register calendar functions
+	Particle.function("getOpen", getOpen);
+	Particle.function("getAlive", vitalCheck);
+	Particle.function("open", openGate);
+	Particle.function("close", closeGate);
 }
 
 /* This function loops forever --------------------------------------------*/
@@ -165,3 +170,22 @@ int triggerRelay(String command){
 	return 0;
 }
 
+int vitalCheck(String extra) {
+	// basically a ping the calendar server uses
+	return 1;
+}
+
+int getOpen(String extra) {
+	// check current state, return status for calendar controller
+	// 1 if open, 2 otherwise
+	// TODO ensure that a high relay means an open gate
+	return (relayController.readRelayStatus(1)) ? 1 : 2;
+}
+
+int openGate(String extra) {
+	return triggerRelay("1on");
+}
+
+int closeGate(String extra) {
+	return triggerRelay("1off");
+}
