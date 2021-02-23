@@ -8,19 +8,6 @@
 
 class RelayAccessory : public HAPAccessoryDescriptor {
 private:
-    /* configuration things. useful! */
-    const bool debugLogging = true;
-    const int minTrips = 5;
-
-    /* homekit config */
-    const char *switchManufacturer = "manufacturer";
-    const char *switchName = "test switch";
-
-    /* relay config */
-    const int relayNumber = 1;
-
-    /* particle config */
-    
     NCD2Relay *relayController;
 
     int REPORT_PERIOD = 2000;

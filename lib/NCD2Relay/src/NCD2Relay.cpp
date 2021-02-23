@@ -1,5 +1,3 @@
-#pragma once
-
 #include "NCD2Relay.h"
 #include "spark_wiring_usbserial.h"
 
