@@ -1,4 +1,5 @@
-#pragma once
+#ifndef NCD2_NCD2_Relay_H
+#define NCD2_NCD2_Relay_H
 
 #include "spark_wiring_i2c.h"
 #include "spark_wiring_usbserial.h"
@@ -53,3 +54,5 @@ private:
     byte outputRegister = 0x0A;
 
 };
+
+#endif

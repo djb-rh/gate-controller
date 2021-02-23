@@ -1,5 +1,3 @@
-#pragma once
-
 #include "I2CBZ.h"
 #include "spark_wiring_i2c.h"
 #include "spark_wiring_usbserial.h"

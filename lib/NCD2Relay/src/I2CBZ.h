@@ -1,4 +1,6 @@
-#pragma once
+#ifndef _NCD2_I2CBZ_H
+#define _NCD2_I2CBZ_H
+
 
 class I2CBZ{
 public:
@@ -12,3 +14,5 @@ private:
     int polarityInversionReg = 0x02;
     int gpioConfigReg = 0x03;
 };
+
+#endif
