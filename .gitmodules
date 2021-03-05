@@ -1,0 +1,4 @@
+[submodule "lib/Particle-HAP"]
+	path = lib/Particle-HAP
+	url = git@morzack.github.com:morzack/Particle-HAP
+	branch = master
