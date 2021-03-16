@@ -36,7 +36,7 @@ void RelayAccessory::initAccessorySet() {
     switchAcc->addService(switchService);
 
     stringCharacteristics *switchServiceName = new stringCharacteristics(charType_serviceName, permission_read, 0);
-    switchServiceName->characteristics::setValue(switchName);
+    switchServiceName->characteristics::setValue(relayNames[this->relayNum]);
     switchAcc->addCharacteristics(switchService, switchServiceName);
 
     boolCharacteristics *powerState = new boolCharacteristics(charType_on,
