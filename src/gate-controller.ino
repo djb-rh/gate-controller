@@ -11,8 +11,8 @@ HKServer *hkServer = NULL;
 
 NCD2Relay relayController;
 
-RelayAccessory *acc = new RelayAccessory(&relayController);
 ParticleInterface *particleInt = new ParticleInterface(&relayController);
+RelayAccessory *acc = new RelayAccessory(&relayController, particleInt);
 
 void progress(Progress_t progress) {
     hkLog.info("Homekit progress callback: %d", progress);

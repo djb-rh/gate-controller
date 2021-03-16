@@ -16,13 +16,15 @@ private:
     int handleCommand(String command); /* triggerRelay() */
 
     void nameHandler(const char *topic, const char *data); /* handler() */
-    void pubState(const char *topic, const char *data);
+    void pubStateHandler(const char *topic, const char *data);
     void triggerRelay(const char *topic, const char *data); /* triggerRelayDos() */
 
 public:
     ParticleInterface(NCD2Relay *relay) {
         this->relayController = relay;
     }
+    
+    void pubState();
 
     void initialize();
     void handle(); /* this replaces the logic in the old loop() function */

@@ -79,11 +79,15 @@ void ParticleInterface::nameHandler(const char *topic, const char *data) {
     strncpy(deviceName, data, sizeof(deviceName)-1);
 }
 
-void ParticleInterface::pubState(const char *topic, const char *data) {
+void ParticleInterface::pubState() {
     char pub[40] = "";
     strcat(pub, pubString);
     strcat(pub, "_1");
     Particle.publish(pub, relayController->readRelayStatus(1) ? "ON" : "OFF", PRIVATE);
+}
+
+void ParticleInterface::pubStateHandler(const char *topic, const char *data) {
+    this->pubState();
 }
 
 void ParticleInterface::triggerRelay(const char *topic, const char *data) {
@@ -105,9 +109,9 @@ void ParticleInterface::initialize() {
 
     Particle.function("controlRelay", &ParticleInterface::handleCommand, this);
     Particle.subscribe(deviceName, &ParticleInterface::triggerRelay, this);
-    Particle.subscribe("getstate", &ParticleInterface::pubState, this);
+    Particle.subscribe("getstate", &ParticleInterface::pubStateHandler, this);
 
-    this->pubState(NULL, NULL);
+    this->pubState();
 }
 
 void ParticleInterface::handle() {
