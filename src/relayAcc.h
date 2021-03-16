@@ -15,6 +15,7 @@ private:
 
     int REPORT_PERIOD = 2000;
     int lastMs = 0;
+    int relayNum;
 
     void identify(bool oldValue, bool newValue, HKConnection *sender);
 
@@ -22,12 +23,13 @@ private:
     void setPower(bool oldValue, bool newValue, HKConnection *sender);
 
 public:
-    RelayAccessory(NCD2Relay *relay, ParticleInterface *particleInt) {
+    RelayAccessory(NCD2Relay *relay, ParticleInterface *particleInt, int relayNum) {
         this->relayController = relay;
         this->particleInt = particleInt;
+        this->relayNum = relayNum;
     }
 
-    virtual void initAccessorySet();
+    void initAccessorySet();
     virtual bool handle() { return false; }
 
     virtual int getDeviceType() { return deviceType_switch; }

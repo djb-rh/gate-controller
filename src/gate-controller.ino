@@ -1,22 +1,22 @@
 #include "config.h"
 #include "particleInt.h"
 #include "relayAcc.h"
+#include "relayService.h"
 
 #include "HKServer.h"
 #include "HKLog.h"
 
 SerialLogHandler logHandler(LOG_LEVEL_ALL);
 
-HKServer *hkServer = NULL;
-
 NCD2Relay relayController;
 
 ParticleInterface *particleInt = new ParticleInterface(&relayController);
-RelayAccessory *acc = new RelayAccessory(&relayController, particleInt);
 
 void progress(Progress_t progress) {
     hkLog.info("Homekit progress callback: %d", progress);
 }
+
+RelayService *services[nRelays];
 
 /* CLOUD FUNCTIONS */
 int restart(String extra);
@@ -28,23 +28,23 @@ void setup() {
 
     relayController.setAddress(0, 0, 0);
 
-    hkServer = new HKServer(acc->getDeviceType(), "dev-name", "523-12-643", progress);
-
-    acc->initAccessorySet();
-    particleInt->initialize();
-    hkServer->start();
+    for (int r=0; r<nRelays; r++) {
+        services[r] = new RelayService(&relayController, particleInt, r);
+        services[r]->init();
+    }
 
     Particle.function("restart", restart);
 }
 
 void loop() {
     bool didAnything = false;
-    didAnything |= hkServer->handle();
-    didAnything |= acc->handle();
-    if (didAnything) {
+    for (int r=0; r<nRelays; r++) {
+        didAnything |= services[r]->handle();
     }
-
-    particleInt->handle();
+    
+    if (didAnything) {
+        /* TODO add logging or something, if we care */
+    }
 }
 
 int restart(String extra) {
