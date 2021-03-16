@@ -6,9 +6,12 @@
 
 #include "NCD2Relay.h"
 
+#include "particleInt.h"
+
 class RelayAccessory : public HAPAccessoryDescriptor {
 private:
     NCD2Relay *relayController;
+    ParticleInterface *particleInt;
 
     int REPORT_PERIOD = 2000;
     int lastMs = 0;
@@ -19,8 +22,9 @@ private:
     void setPower(bool oldValue, bool newValue, HKConnection *sender);
 
 public:
-    RelayAccessory(NCD2Relay *relay) {
+    RelayAccessory(NCD2Relay *relay, ParticleInterface *particleInt) {
         this->relayController = relay;
+        this->particleInt = particleInt;
     }
 
     virtual void initAccessorySet();

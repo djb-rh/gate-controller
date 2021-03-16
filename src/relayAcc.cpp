@@ -20,6 +20,7 @@ void RelayAccessory::setPower(bool oldValue, bool newValue, HKConnection *sender
     } else {
         relayController->turnOffRelay(relayNumber);
     }
+    particleInt->pubState();
 }
 
 void RelayAccessory::initAccessorySet() {
