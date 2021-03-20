@@ -1,38 +1,35 @@
 #include "relayService.h"
 
 #include "config.h"
-#include "particleInt.h"
-#include "relayAcc.h"
+#include "relay.h"
 
-#include "HKLog.h"
+#include <Particle.h>
 
-void progress(Progress_t progress) {
-    hkLog.info("Homekit progress callback: %d", progress);
+#include "HKConnection.h"
+#include "HKLog.h" 
+
+std::string RelayService::getPower(HKConnection *sender) {
+    return RelayBoard::getPower(port) ? "true" : "false";
 }
 
-RelayService::RelayService(NCD2Relay *relayController, int relayId) {
-    this->relayId = relayId;
-    
-    this->acc = new RelayAccessory(relayController, relayId);
-    this->particleInt = new ParticleInterface(relayController);
-
-    this->hkServer = new HKServer(
-            this->acc->getDeviceType(),
-            relayNames[relayId],
-            "523-12-643",
-            progress);
-}
-
-void RelayService::init() {
-    this->acc->initAccessorySet();
-    this->particleInt->initialize();
-    this->hkServer->start();
+void RelayService::setPower(bool oldValue, bool newValue, HKConnection *sender) {
+    RelayBoard::setPower(port, newValue);
 }
 
 bool RelayService::handle() {
-    bool didAnything = false;
-    didAnything |= this->acc->handle();
-    didAnything |= this->hkServer->handle();
-    this->particleInt->handle();
-    return didAnything;
+    return false;
+}
+
+void RelayService::initService(Accessory *accessory) {
+    Service *switchService = new Service(serviceType_switch);
+    accessory->addService(switchService);
+
+    stringCharacteristics *switchServiceName = new stringCharacteristics(charType_serviceName, permission_read, 0);
+    switchServiceName->characteristics::setValue(Config::relayNames[port]);
+    accessory->addCharacteristics(switchService, switchServiceName);
+
+    boolCharacteristics *powerState = new boolCharacteristics(charType_on, permission_read|permission_write|permission_notify);
+    powerState->perUserQuery = std::bind(&RelayService::getPower, this, std::placeholders::_1);
+    powerState->valueChangeFunctionCall = std::bind(&RelayService::setPower, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+    accessory->addCharacteristics(switchService, powerState);
 }

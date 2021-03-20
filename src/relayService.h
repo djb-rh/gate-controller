@@ -1,24 +1,22 @@
 #ifndef autogate_relayService_h
 #define autogate_relayService_h
 
-#include "particleInt.h"
-#include "relayAcc.h"
+#include "HAPAccessoryDescriptor.h"
+#include "HAPServiceDescriptor.h"
+#include "HKAccessory.h"
 
-#include "NCD2Relay.h"
-#include "HKServer.h"
-
-class RelayService {
+class RelayService : public HAPServiceDescriptor {
 private:
-    RelayAccessory *acc;
-    ParticleInterface *particleInt;
-    HKServer *hkServer;
+    int port;
 
-    int relayId;
+    std::string getPower(HKConnection *sender);
+    void setPower(bool oldValue, bool newValue, HKConnection *sender);
+
 public:
-    RelayService(NCD2Relay *relayController, ParticleInterface *particleInt, int relayId);
+    RelayService(int port) { this->port = port; }
 
-    void init();
-    bool handle();
+    virtual void initService(Accessory *accessory);
+    virtual bool handle();
 };
 
 #endif
