@@ -1,12 +1,10 @@
 #ifndef autogate_particleInt_h
 #define autogate_particleInt_h
 
-#include "NCD2Relay.h"
+#include <Particle.h>
 
 class ParticleInterface {
 private:
-    NCD2Relay *relayController;
-
     char deviceName[32] = "";
     char pubString[40] = "";
 
@@ -20,12 +18,6 @@ private:
     void triggerRelay(const char *topic, const char *data); /* triggerRelayDos() */
 
 public:
-    ParticleInterface(NCD2Relay *relay) {
-        this->relayController = relay;
-    }
-    
-    void pubState();
-
     void initialize();
     void handle(); /* this replaces the logic in the old loop() function */
 };
