@@ -13,7 +13,7 @@ std::string RelayService::getPower(HKConnection *sender) {
 }
 
 void RelayService::setPower(bool oldValue, bool newValue, HKConnection *sender) {
-    RelayBoard::setPower(port, newValue);
+    RelayBoard::setPower(port+1, newValue);
 }
 
 bool RelayService::handle() {

@@ -20,10 +20,6 @@ int ParticleInterface::handleCommand(String command) {
     int relayNumber = command.substring(0, 1).toInt();
     String relayCommand = command.substring(1);
 
-    String event = pubString;
-    event += "_";
-    event += (relayNumber);
-    
 #ifdef serialLogging
     Serial.print("relayNumber: ");
     Serial.println(relayNumber);
@@ -36,7 +32,6 @@ int ParticleInterface::handleCommand(String command) {
         Serial.println("Turning on relay");
 #endif
         RelayBoard::setPower(relayNumber, true);
-        ParticleLog::pubEvent(relayNumber, "ON");
         return 1;
     }
 
@@ -45,7 +40,6 @@ int ParticleInterface::handleCommand(String command) {
         Serial.println("Turning off relay");
 #endif
         RelayBoard::setPower(relayNumber, false);
-        ParticleLog::pubEvent(relayNumber, "OFF");
         return 1;
     }
     
@@ -93,7 +87,7 @@ void ParticleInterface::initialize() {
 
     for (uint32_t ms = millis(); millis() - ms < 3000 && !(std::strcmp(deviceName, "")); Particle.process());
     
-    ParticleLog::initialize(deviceName);
+    ParticleLog::initialize(String(deviceName));
 #ifdef serialLogging
     Serial.println(deviceName);
 #endif
