@@ -26,11 +26,11 @@ void setup() {
     
     Serial.begin(115200);
     
-    particleInt = new ParticleInterface();
-    particleInt->initialize(); // initializes logging as well
-
     relayController.setAddress(0, 0, 0);
     RelayBoard::initialize(&relayController);
+
+    particleInt = new ParticleInterface();
+    particleInt->initialize(); // initializes logging as well
 
     acc = new RelayBridge();
     hkServer = new HKServer(acc->getDeviceType(), Config::devName, "523-12-643", progress);
