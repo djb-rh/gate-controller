@@ -8,6 +8,9 @@
 class RelayService : public HAPServiceDescriptor {
 private:
     int port;
+    unsigned long lastReportMS;
+
+    boolCharacteristics *powerState;
 
     std::string getPower(HKConnection *sender);
     void setPower(bool oldValue, bool newValue, HKConnection *sender);
