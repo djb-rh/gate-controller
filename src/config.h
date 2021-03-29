@@ -10,6 +10,7 @@ namespace Config {
     static const char *switchManufacturer = "manufacturer";
     static const char *switchName = "test switch";
     static const char *devName = "dev-name";
+    static const unsigned long reportDelayMS = 5000;
 
     /* relay config */
     /* if a relay is being used, it'll show up under the name as a homekit accessory */
