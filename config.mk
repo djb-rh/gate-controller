@@ -1,2 +1,2 @@
-DEVICEID = chirei
+DEVICEID = DEV_ID_HERE
 DEVICETYPE = photon
