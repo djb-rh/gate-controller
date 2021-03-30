@@ -68,7 +68,7 @@ void ParticleInterface::nameHandler(const char *topic, const char *data) {
 }
 
 void ParticleInterface::pubStateHandler(const char *topic, const char *data) {
-    for (int relayNumber = 1; relayNumber <= Config::relayNumber; relayNumber++) {
+    for (int relayNumber = 1; relayNumber <= Config::nRelays; relayNumber++) {
         ParticleLog::pubRelayState(
                 relayNumber,
                 RelayBoard::getPower(relayNumber));
@@ -99,10 +99,6 @@ void ParticleInterface::initialize() {
             String::format("%s_relay", deviceName),
             &ParticleInterface::triggerRelay, this);
     Particle.subscribe("getstate", &ParticleInterface::pubStateHandler, this);
-
-    ParticleLog::pubRelayState(
-            Config::relayNumber,
-            RelayBoard::getPower(Config::relayNumber));
 }
 
 void ParticleInterface::handle() {

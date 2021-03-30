@@ -8,23 +8,15 @@
 namespace Config {
     /* homekit config */
     static const char *switchManufacturer = "manufacturer";
-    static const char *switchName = "test switch";
-    static const char *devName = "dev-name";
+    static const char *devName = "device name";
     static const unsigned long reportDelayMS = 5000;
 
     /* relay config */
-    /* if a relay is being used, it'll show up under the name as a homekit accessory */
-    /* TODO there's probably a better way to configure this. also not in use yet */
-    static const int nRelays = 1;           /* number of relays being used                  */
-    /* static const int relaysUsing = 0b01;    /1* bitmask of relays to activate:               *1/ */
-                                            /* i.e. both relays = 0b11, relay 1 = 0b01, etc */
-    static const char *relayNames[] = {     /* the name of each relay for homekit           */
+    static const int nRelays = 2;           /* number of relays being used                      */
+    static const char *relayNames[] = {     /* the name of each relay as it appears in homekit  */
         "relay-1",
-        "relay-2"                           /* note that we're only using one relay so this */
-                                            /* ends up being ignored                        */
+        "relay-2"
     };
-
-    static const int relayNumber = 1;
 
     /* particle config */
 }
