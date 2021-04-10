@@ -13,10 +13,9 @@ namespace ParticleLog {
 
     void pubEvent(int port, String event) {
         Particle.publish(
-                String::format("%s_%d", deviceName.c_str(), port),
-                event,
+                deviceName,
+                String::format("%d%s", port, event.c_str()),
                 PRIVATE);
-        Serial.println(String::format("%s_%d", deviceName.c_str(), port));
     }
 
     void pubRelayState(int port, bool powered) {
