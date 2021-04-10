@@ -19,7 +19,9 @@ void RelayService::setPower(bool oldValue, bool newValue, HKConnection *sender) 
 bool RelayService::handle() {
     if ((lastReportMS + Config::reportDelayMS) < millis()) {
         lastReportMS = millis();
-        powerState->notify(NULL);
+        if (powerState != NULL) {
+            powerState->notify(NULL);
+        }
         return true;
     }
     return false;
