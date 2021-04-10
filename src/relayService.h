@@ -8,7 +8,7 @@
 class RelayService : public HAPServiceDescriptor {
 private:
     int port;
-    unsigned long lastReportMS;
+    unsigned long lastReportMS = 0;
 
     boolCharacteristics *powerState;
 
