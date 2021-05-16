@@ -2,6 +2,8 @@ include config.mk
 
 all: compile clean
 
+install: flash
+
 flash:
 	particle flash $(DEVICEID)
 
