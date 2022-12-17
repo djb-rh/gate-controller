@@ -8,6 +8,8 @@
 // This #include statement was automatically added by the Particle IDE.
 #include <NCD2Relay.h>
 
+#include <stdlib.h>
+
 NCD2Relay relayController;
 
 SYSTEM_MODE(AUTOMATIC);
@@ -19,6 +21,7 @@ bool tripped[6];
 int debugTrips[6];
 
 int minTrips = 5;
+int skipCounter = 0;
 
 String eventName;
 
@@ -36,8 +39,25 @@ void pubState(const char *topic, const char *data){
 	char pub[40] = "";
 	strcat(pub, pubString);
 	strcat(pub, "_1");
-	if (relayController.readRelayStatus(1)) Particle.publish(pub, "ON", PRIVATE);
-	else Particle.publish(pub, "OFF", PRIVATE);
+        char skips[sizeof(int)*8+1] = "";
+        itoa(skipCounter, skips, 10);
+        char stats[sizeof(int)*8+5] = "";
+	if (relayController.readRelayStatus(1)) {
+            strcat(stats, "ON ");
+            strcat(stats, skips);
+            Particle.publish(pub, stats, PRIVATE);
+        }
+	else {
+            strcat(stats, "OFF ");
+            strcat(stats, skips);
+            Particle.publish(pub, stats, PRIVATE);
+        }
+
+}
+
+void skipCommand(const char *topic, const char *data){
+        skipCounter = atoi(data);
+        pubState(NULL, NULL);
 }
 
 /* This function is called once at start up ----------------------------------*/
@@ -58,8 +78,13 @@ void setup()
 	// listen for monitors to ask for state and if they do, report it (this report is the same
 	// as what gets reported when the gate state is changed)
 	Particle.subscribe("getstate", pubState, MY_DEVICES);
+
+        // listen for "skipcommand" if then increment the skipCounter if given
+	Particle.subscribe("skipcommand", skipCommand, MY_DEVICES);
+
 	// publish state on boot up, too
 	pubState(NULL, NULL);
+
 
 }
 
@@ -103,8 +128,15 @@ void loop()
 }
 
 int triggerRelayDos(const char *event, const char *data){
-    Serial.println(data);
-    triggerRelay(data);
+    if(skipCounter==0){
+        Serial.println(data);
+        triggerRelay(data);
+    }
+    else {
+        skipCounter--;
+        pubState(NULL, NULL);
+    }
+    return 1;
 }
 
 int triggerRelay(String command){
